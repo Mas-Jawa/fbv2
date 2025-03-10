@@ -1,3 +1,10 @@
+import random
+import requests
+import pytesseract
+import threading
+from PIL import Image
+from io import BytesIO
+from concurrent.futures import ThreadPoolExecutor
 
 import os
 
