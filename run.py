@@ -184,7 +184,91 @@ def generate_headers():
     }
     return headers
 
+# ------------[ INDICATION ]---------------#
+M2 = "[#FF0000]"  # MERAH
+H2 = "[#00FF00]"  # HIJAU
+K2 = "[#FFFF00]"  # KUNING
+B2 = "[#00C8FF]"  # BIRU
+P2 = "[#FFFFFF]"  # PUTIH
+U2 = "[#AF00FF]"  # UNGU
+O2 = "[#FF8F00]"  # ORANGE
+try:
+    file_color = open("data/theme_color", "r").read()
+    color_text = file_color.split("|")[0]
+    color_panel = file_color.split("|")[1]
+except:
+    color_text = "[#00FF00]"
+    W1 = random.choice([M2, H2, K2])
+    W2 = random.choice([K2, M2, K2])
+    W3 = random.choice([H2, K2, M2])
+    color_panel = "#00FF00"
+    color_ok = "#00FF00"
+    color_cp = "#FFFF00"
+try:
+    color_table = open("data/theme_color", "r").read()
+except FileNotFoundError:
+    color_table = "#00FF00"
+#------------[ INDICATION ]---------------#
+P = '\x1b[1;97m' # PUTIH
+M = '\x1b[1;91m' # MERAH
+H = '\x1b[1;92m' # HIJAU
+K = '\x1b[1;93m' # KUNING
+B = '\x1b[1;94m' # BIRU
+U = '\x1b[1;95m' # UNGU
+O = '\x1b[1;96m' # BIRU MUDA
+N = '\x1b[0m'	# WARNA MATI
+#------------[ WARNA-COLOR ]--------------#
+P = '\x1b[1;97m'
+M = '\x1b[1;91m'
+H = '\x1b[1;92m'
+K = '\x1b[1;93m'
+B = '\x1b[1;94m'
+U = '\x1b[1;95m' 
+O = '\x1b[1;96m'
+N = '\x1b[0m'    
+Z = "\033[1;30m"
+sir = '\033[41m\x1b[1;97m'
+x = '\33[m' # DEFAULT
+m = '\x1b[1;91m' #RED +
+k = '\033[93m' # KUNING +
+h = '\x1b[1;92m' # HIJAU +
+hh = '\033[32m' # HIJAU -
+u = '\033[95m' # UNGU
+kk = '\033[33m' # KUNING -
+b = '\33[1;96m' # BIRU -
+p = '\x1b[0;34m' # BIRU +
+asu = random.choice([m,k,h,u,b])
+kom2 = random.choice(["Jadikan Aku Anak Buah Mu Bang @[100043537611609:]","Panutan Ku","Sebenarnya Aku Suka Sama Kamu, Tetapi Aku Cuma Butuh Waktu Untuk Mengungkapkan Isi Hati Ku"])
+# --------------------[ CONVERTER-BULAN ]--------------#
+dic = {"1": "January", "2": "February", "3": "March", "4": "April", "5": "May", "6": "June", "7": "July", "8": "August", "9": "September", "10": "October", "11": "November", "12": "December"}
+dic2 = {"01": "January", "02": "February", "03": "March", "04": "April", "05": "May", "06": "June", "07": "July", "08": "August", "09": "September", "10": "October", "11": "November", "12": "December"}
+
+tgl = datetime.datetime.now().day
+bln = dic[(str(datetime.datetime.now().month))]
+thn = datetime.datetime.now().year
+okc = "OK-" + str(tgl) + "-" + str(bln) + "-" + str(thn) + ".txt"
+cpc = "CP-" + str(tgl) + "-" + str(bln) + "-" + str(thn) + ".txt"
+hour = datetime.datetime.now().hour
+hari_ini = datetime.datetime.now().strftime("%d %B %Y")
+current_time = datetime.datetime.now()
+jam_fan = current_time.strftime("%I:%M %p")
+
+# ------------------[ BERSIHIN MUKA LU]-----------------#
+def clear():
+    if "linux" in sys.platform.lower():os.system("clear")
+    elif "win" in sys.platform.lower():os.system("cls")
+
+def jalan(keliling):
+    for mau in keliling + "\n":
+        sys.stdout.write(mau)
+        sys.stdout.flush()
+        time.sleep(0.03)
+
     #MENU AWAL
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+
 console = Console()
 
 def banner():
@@ -199,7 +283,9 @@ def banner():
 """, style="bold green"),
     width=60, style="bold cyan", title="[bold white]🔥 FENDI 🔥"))
 
+#KALEM AJA LOGIN NYA BRO
 def login123():
+    banner()
     banner()
     console.print(Panel(
         "[bold yellow][01][/bold yellow] Login Menggunakan Cookie 🍪\n"
@@ -210,6 +296,7 @@ def login123():
 
     if pilihan == "1":
         console.print("[bold green]✅ Login menggunakan Cookie...[/bold green]")
+        logincoki()
     elif pilihan == "2":
         console.print("[bold red]❌ Keluar...[/bold red]")
         exit()
@@ -220,26 +307,33 @@ def login123():
 
 def login():
     try:
-        token = open(".fantoken.txt", "r").read()
-        cok = open(".fancookie.txt", "r").read()
+        # Membaca token & cookie dari file
+        token = open(".fantoken.txt", "r").read().strip()
+        cok = open(".fancookie.txt", "r").read().strip()
         tokenku.append(token)
+        # **Cek apakah token masih valid**
+        check = requests.get(f"https://graph.facebook.com/me?access_token={token}", cookies={"cookie": cok}).json()
+        if "error" in check:
+            if "Invalid OAuth" in check["error"]["message"] or check["error"]["code"] in [190, 102]:
+                console.print(f" {H2}• {P2}[bold red] Token kadaluarsa atau invalid!")
+                os.system("rm -rf .fantoken.txt && rm -rf .fancookie.txt")
+                login123()  # Minta login ulang
+            elif "checkpoint" in check["error"]["message"]:
+                console.print(f" {H2}• {P2}[bold red] Akun terkena checkpoint!")
+                os.system("rm -rf .fantoken.txt && rm -rf .fancookie.txt")
+                login123()  # Minta login ulang
+        # Jika token valid, masuk ke menu
         try:
             menu()
         except KeyError:
             login123()
         except requests.exceptions.ConnectionError:
-            Console().print(
-                f" {H2}• {P2}[bold red]Problem Internet Connection, Check And Try Again"
-            )
+            console.print(f" {H2}• {P2}[bold red] Problem Internet Connection, Check And Try Again")
             exit()
     except IOError:
         login123()
 
-
-
-
-
-# --------------------[ LOGIN-TOKEN-EAAB ]--------------#
+#------------------[ LOGIN-TOKEN]--------------------#
 def logincoki():
     try:
         cok = Console().input(f" {H2}• {P2}cookie : ")
