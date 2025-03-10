@@ -286,7 +286,6 @@ def banner():
 #KALEM AJA LOGIN NYA BRO
 def login123():
     banner()
-    banner()
     console.print(Panel(
         "[bold yellow][01][/bold yellow] Login Menggunakan Cookie 🍪\n"
         "[bold yellow][02][/bold yellow] Keluar 🚪",
