@@ -143,14 +143,6 @@ try:
 		ugen.append(fn)
 except :
 	ugent = "Mozilla/5.0 (Linux; Android 12; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.85 Mobile Safari/537.36"
-	ua_list = [
-    "Mozilla/5.0 (Linux; Android 10; Redmi Note 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.129 Mobile Safari/537.36",
-    "Mozilla/5.0 (Linux; Android 11; Redmi Note 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.129 Mobile Safari/537.36",
-    "Mozilla/5.0 (Linux; Android 10; Redmi Note 9 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.129 Mobile Safari/537.36"
-]
-import random
-ua = random.choice(ua_list)  # Pilih UA secara acak
-headers = {"User-Agent": ua}
 
 for t in range(1000):
     rc = random.choice
@@ -166,7 +158,24 @@ for t in range(1000):
         'SAMSUNG SM-G950F', 'SAMSUNG SM-A505F', 'SAMSUNG SM-G532M Build/MMB29T',
         'SAMSUNG SM-N975F', 'SAMSUNG SM-J701M', 'SAMSUNG SM-J710MN', 'SAMSUNG SM-N960F',
         'SAMSUNG SM-A505F', 'SAMSUNG SM-G532F', 'SAMSUNG SM-A515F', 'SAMSUNG SM-A107M'
+        # Tambahan UA Redmi Note 9
+        'Xiaomi Redmi Note 9 Build/QKQ1.191215.002', 
+        'Xiaomi Redmi Note 9 Pro Build/QKQ1.191215.002',
+        'Xiaomi Redmi Note 9S Build/QKQ1.191215.002',
+        'Xiaomi Redmi Note 9 Pro Max Build/QKQ1.191215.002',
+        'Xiaomi Redmi Note 9 Android 10',
+        'Xiaomi Redmi Note 9 MIUI 12'
     ])
+
+# User-Agent Dalvik
+    dalvik_redmi = f"Dalvik/2.1.0 (Linux; U; Android {andro}; {samsung}) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/{rr(10, 14)}.{rr(1, 10)} Chrome/{rr(30, 270)}.0.{rr(15, 7000)}.{rr(20, 275)} Mobile Safari/537.36"
+
+    # User-Agent Facebook Lite (FBAN)
+    fb_lite = f"Dalvik/2.1.0 (Linux; U; Android {andro}; {samsung}) [FBAN/MessengerLite;FBAV/{rr(100,467)}.0.0.5.119;FBPN/com.facebook.mlite;FBLC/en_GB;FBBV/{rr(100000000,9000000000)};FBCR/Telkomsel;FBMF/Xiaomi;FBBD/Redmi;FBDV/{samsung};FBSV/{andro};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/{{density=2.5,height=2340,width=1080}};]"
+
+    # Random pilih salah satu
+    ugen.append(random.choice([dalvik_redmi, fb_lite]))
+
     fanky = f"Dalvik/2.1.0 (Linux; U; Android {rr(1, 14)}; {samsung}) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/{rr(10, 14)}.{rr(1, 10)} Chrome/{rr(30, 270)}.0.{rr(15, 7000)}.{rr(20, 275)} Mobile Safari/537.36"
     d = f"Dalvik/2.1.0 (Linux; U; Android {andro}; V2043_21 Build/RP1A.200720.012) [FBAN/MessengerLite;FBAV/{rr(100,467)}.0.0.5.119;FBPN/com.facebook.mlite;FBLC/en_GB;FBBV/{rr(100000000,9000000000)};FBCR/Warid;FBMF/vivo;FBBD/vivo;FBDV/V2043_21;FBSV/{andro};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/{{density=2.25,height=,width=}};]"
     a = f"Dalvik/2.1.0 (Linux; U; Android {andro}; moto g52 Build/S1SRS32.38-132-8) [FBAN/MessengerLite;FBAV/{rr(100,467)}.0.0.7.131;FBPN/com.facebook.mlite;FBLC/en_GB;FBBV/543901789;FBCR/;FBMF/motorola;FBBD/motorola;FBDV/moto g52;FBSV/{andro};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/{{density=2.25,height=1024,width=2048}};]"
@@ -174,6 +183,18 @@ for t in range(1000):
     siska = f"Dalvik/2.1.0 (Linux; U; Android {andro}; vivo V3Max Build/LMY47V) [FBAN/Orca-Android;FBAV/{rr(100,467)}.0.0.16.158;FBPN/com.facebook.orca;FBLC/en_US;FBBV/{rr(100000000,9000000000)};FBCR/null;FBMF/vivo;FBBD/vivo;FBDV/vivo V3Max;FBSV/{andro};FBCA/armeabi-v7a:armeabi;FBDM/{{density=3.0,width=1080,height=1920}};]"
     ua = random.choice([fanky])
     ugen.append(ua)
+
+# Tambahan Mozilla User-Agent
+for t in range(10000):
+    a = random.choice(['9', '10', '11', '12', '13'])
+    b = random.randrange(111111, 210000)
+    c = random.randrange(73, 100)
+    d = random.randrange(4200, 4900)
+    e = random.randrange(40, 150)
+
+    ua_mozilla = f'Mozilla/5.0 (Linux; Android {a}; Xiaomi Redmi Note 9 Build/QKQ1.{b}.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{c}.0.{d}.{e} Mobile Safari/537.36'
+    
+    ugen.append(uaku)
 
 for t in range(10000):
 	a=random.choice(['1','1.0','1.5','2','2.0','2.5','3','3.0','3.5','4','4.0','4.5','5','5.0','5.5','6','6.0','6.5','7','7.0','7.5','8','8.0','8.5','9','9.0','9.5','10','10.0','10.5','11','11.0','11.5','12','12.0','12.5','13'])
@@ -207,7 +228,8 @@ for t in range(10000):
 	uaku2 = random.choice([udinsad1,udinsad2,udinsad3,udinsad4,udinsad5,udinsad6,udinsad7,udinsad8,udinsad9,udinsad10,udinsad11,udinsad12,udinsad13,udinsad14,udinsad15,udinsad16,udinsad17,udinsad18,udinsad19,udinsad20])
 	ugen.append(uaku2)
 	
-	a='Mozilla/5.0 (Linux; Android'
+
+	a= 'Mozilla/5.0 (Linux; Android'
 	b=random.choice(['5.0','6.0','7.0','8.1.0','9','10','11','12'])
 	c=random.choice(['SAMSUNG GT-I9506/XXUDOE4 Build/LRX22C'])
 	d=random.choice(['A','B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'])
@@ -867,7 +889,7 @@ def banner():
     console.print(Panel(
         Text("""
 ███████╗███████╗███╗   ██╗██████╗ ██╗       
-██╔════╝██╔════╝████╗  ██║██╔══██╗██║
+██╔════╝██╔════╝████╗  ██║██╔══██╗██║   
 ███████╗█████╗  ██╔██╗ ██║██║  ██║██║
 ██╚════║██╔══╝  ██║╚██╗██║██║  ██║██║
 ██     ║███████╗██║ ╚████║██████╔╝██║
