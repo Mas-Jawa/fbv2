@@ -1723,21 +1723,12 @@ def fankygraphv1(idf, pwv, url):
         except requests.exceptions.ConnectionError:
             time.sleep(31)  # Tunggu 31 detik jika terjadi kesalahan koneksi
 
-    loop += 1  # Tambah counter loop
+    loop += 1
 
 #-------------------[ CRACK-MAIN ]------------#
-# Load proxy dari file
-with open("prox.txt", "r") as f:
-    proxies = f.read().splitlines()
-
-# Load User-Agent dari file
-with open("ua.txt", "r") as f:
-    uagen = f.read().splitlines()
-
-def fankywww(idf, pwv):
+def fankytouch(idf, pwv):
     global loop, ok, cp
     ses = requests.Session()
-
     for pw in pwv:
         try:
             ua = random.choice(uagen)  # Random User-Agent tiap request
@@ -1793,15 +1784,7 @@ def fankywww(idf, pwv):
     loop += 1
 
 #-------------------[ CRACK-MAIN ]------------#
-# Load proxy dari file
-with open("prox.txt", "r") as f:
-    proxies = f.read().splitlines()
-
-# Load User-Agent dari file
-with open("ua.txt", "r") as f:
-    uagen = f.read().splitlines()
-
-def fanky_b_api(idf, pwv):
+def fankyip(idf, pwv):
     global loop, ok, cp
     ses = requests.Session()
     
@@ -1910,18 +1893,9 @@ def fankytouch(idf,pwv):
 	loop+=1
 
 #-----------------CRACK-MAIN---------------#
-# Load Proxy SOCKS5 dari file
-with open("prox.txt", "r") as f:
-    proxies = f.read().splitlines()
-
-# Load User-Agent dari file
-with open("ua.txt", "r") as f:
-    uagen = f.read().splitlines()
-
-def fankytouch_mobile(idf, pwv):
+def fanky_b_api(idf, pwv):
     global loop, ok, cp
     ses = requests.Session()
-
     for pw in pwv:
         try:
             ua = random.choice(uagen)  # Random User-Agent
