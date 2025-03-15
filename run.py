@@ -1498,7 +1498,15 @@ def metcepat():
                         with open("pass.txt", "r") as file:
                             extra_pw = [line.strip() for line in file.readlines()]
                     except FileNotFoundError:
+                        extra_pw = []  # Inisialisasi jika file tidak ditemukan
+
+                    # Pastikan extra_pw selalu ada sebelum dipakai
+                    if not isinstance(extra_pw, list):
                         extra_pw = []
+
+                    # Tambahkan wordlist dari pass.txt ke list password
+                    pwv.extend(extra_pw)
+
                     if len(frs)<3:
                         pass
                     else:
@@ -1524,9 +1532,6 @@ def metcepat():
                         pwv.append(frs.capitalize() + "2024")
                         pwv.append(frs + str(random.randint(10,99)))
                         pwv.append(frs.capitalize() + "123")
-
-                # **Tambahkan wordlist dari pass.txt ke list password**
-                pwv.extend(extra_pw)
 
                 if 'ya' in pwpluss: 
                     for xpwd in pwnya:
